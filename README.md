@@ -76,3 +76,12 @@ Simple widget, button with icon.
 			});
 			icon.src = imageURL;
 	}
+	
+Debugger
+========
+
+Render state graph with transitions:
+
+	new SMREnderer(sm);
+	
+Basic example: http://gtanczyk.github.com/statemachinka/tests/test_renderer.html
