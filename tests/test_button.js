@@ -8,7 +8,8 @@ function createButton(node, actionHandler, imageURL) {
 		var STATE_INIT		= 1 << 1,
 			STATE_IDLE		= 1 << 2,
 			STATE_HOVER		= 1 << 3,
-			STATE_PRESSED	= 1 << 4;
+			STATE_PRESSED	= 1 << 4,
+			STATE_PRESSED_OUT	= 1 << 5;
 			
 		// events
 		var	KEYDOWN		= 1 << 1,
@@ -27,10 +28,19 @@ function createButton(node, actionHandler, imageURL) {
 		sm.feed(STATE_HOVER,	MOUSE_OUT,	STATE_IDLE, function() {
 			node.style.border = '1px solid green';
 		});
-		sm.feed(STATE_HOVER|STATE_IDLE, 	MOUSE_DOWN,		STATE_PRESSED, function() {
+		sm.feed(STATE_HOVER|
+				STATE_IDLE, 	MOUSE_DOWN,		STATE_PRESSED, function() {
 			node.style.opacity = '0.5';
 		});
-		sm.feed(STATE_PRESSED, 	MOUSE_UP,	STATE_IDLE, function() {
+		sm.feed(STATE_PRESSED, 	MOUSE_UP,	STATE_HOVER, function() {
+			node.style.opacity = null;
+		});		
+		sm.feed(STATE_PRESSED, 	MOUSE_OUT,	STATE_PRESSED_OUT);
+		sm.feed(STATE_PRESSED_OUT, 	
+								MOUSE_OVER,	STATE_PRESSED);
+		sm.feed(STATE_PRESSED_OUT, 	
+								MOUSE_UP,	STATE_IDLE, function() {
+			node.style.border = '1px solid green';
 			node.style.opacity = null;
 		});
 		
@@ -58,4 +68,6 @@ function createButton(node, actionHandler, imageURL) {
 				});			
 		});
 		icon.src = imageURL;
+		
+		return sm;
 }
